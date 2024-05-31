@@ -1,7 +1,7 @@
 export interface ColumnData {
   id: string;
   title: string;
-  //cards: CardData[];
+  cards: CardData[];
 }
 
 export interface CardData {
@@ -9,5 +9,4 @@ export interface CardData {
   columnId: string;
   title: string;
   description: string;
-  labels: string[];
 }

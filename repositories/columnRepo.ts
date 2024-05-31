@@ -1,36 +1,49 @@
-let columns = [{
-  "id": "1",
-  "title": "Design"
-},
-{
-  "id": "2",
-  "title": "Prototype"
-}]
+import prisma from '../prisma/prismaClient';
 
 export const getAllColumns = async () => {
-  return columns;
+  return prisma.column.findMany({
+    include: {
+      cards: true,
+    },
+  });
 };
+
+export const getAllColumnsByBoardId = async (boardId: string) => {
+    return prisma.column.findMany({
+      where: { boardId },
+      include: {
+        cards: true,
+      },
+    });
+  };
 
 export const getColumnById = async (id: string) => {
-  return columns.find((column: any) => column.id === id);
+  return prisma.column.findUnique({
+    where: { id },
+    include: {
+      cards: true,
+    },
+  });
 };
 
-export const addColumn = async (newColumn: any) => {
-  columns.push(newColumn);
-  return newColumn;
+export const addColumn = async (newColumn: { title: string; boardId: string }) => {
+  return prisma.column.create({
+    data: {
+      title: newColumn.title,
+      boardId: newColumn.boardId,
+    },
+  });
 };
 
-export const updateColumn = async (id: string, updatedColumn: any) => {
-  const columnIndex = columns.findIndex((column: any) => column.id === id);
-  if (columnIndex !== -1) {
-    columns[columnIndex] = { ...columns[columnIndex], ...updatedColumn };
-    return columns[columnIndex];
-  }
-  return null;
+export const updateColumn = async (id: string, updatedColumn: { title?: string }) => {
+  return prisma.column.update({
+    where: { id },
+    data: updatedColumn,
+  });
 };
 
 export const deleteColumn = async (id: string) => {
-  const newColumns = columns.filter((column: any) => column.id !== id);
-  columns = newColumns;
-  return newColumns;
+  return prisma.column.delete({
+    where: { id },
+  });
 };

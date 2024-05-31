@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
+import { CardData } from '../interfaces';
 
 interface CardProps {
-  card: {
-    id: string;
-    columnId: string;
-    title: string;
-    description: string;
-    labels?: string[];
-  };
-  
-  onUpdate: (columnId: string, cardId: string, newTitle: string, newDescription: string) => void;
-  onDelete: (columnId: string, cardId: string) => void;
+  card: CardData;
+  onUpdate: (cardId: string, newTitle: string, newDescription: string) => void;
+  onDelete: (cardId: string) => void;
 }
 
 const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
-
   const [menuOpen, setMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(card.title);
@@ -25,17 +18,23 @@ const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
   };
 
   const handleUpdate = () => {
-    onUpdate(card.columnId, card.id, newTitle, newDescription);
+    onUpdate(card.id, newTitle, newDescription);
     setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    onDelete(card.id);
+    setIsEditing(false);
+    setMenuOpen(false);
   };
 
   return (
     <div className="relative bg-white p-4 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-2">
         <div className="flex space-x-1">
-          {card.labels?.map((label, index) => (
+          {/* {card.labels?.map((label, index) => (
             <span key={index} className={`block h-2 w-6 bg-${label}-500 rounded-full`}></span>
-          ))}
+          ))} */}
         </div>
         <div className="relative">
           <button onClick={handleMenuToggle} className="text-gray-500">
@@ -45,8 +44,8 @@ const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
           </button>
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-              <button onClick={() => setIsEditing(true)} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Update</button>
-              <button onClick={() => onDelete(card.columnId, card.id)} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Delete</button>
+              <button onClick={() => { setIsEditing(true); setMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Update</button>
+              <button onClick={handleDelete} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Delete</button>
             </div>
           )}
         </div>
@@ -70,7 +69,6 @@ const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
         <>
           <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
           <p className="text-gray-600 mb-4">{card.description}</p>
-          <div className="flex justify-between items-center"> </div>
         </>
       )}
     </div>

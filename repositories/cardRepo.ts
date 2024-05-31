@@ -1,63 +1,47 @@
-let cards = [
-  {
-    "id": "1",
-    "columnId": "1",
-    "title": "Old fashioned recipe for preventing allergies and chemical sensitivities",
-    "description": "Card description goes here. It might be long or short.",
-    "labels": [
-      "red",
-      "yellow",
-      "green",
-      "purple"
-    ]
-  },
-  {
-    "id": "2",
-    "columnId": "2",
-    "title": "Home business advertising ideas",
-    "description": "Successful businesses know the importance of building and maintaining good working.",
-    "labels": [
-      "blue",
-      "red",
-      "yellow"
-    ]
-  },
-  {
-    "id": "card-1716843545446",
-    "columnId": "2",
-    "title": "Mahmoud",
-    "description": "Mowiena",
-    "labels": []
-  }
-]
+import prisma from '../prisma/prismaClient';
 
 export const getAllCards = async () => {
-  return cards;
+  return prisma.card.findMany();
 };
+
+export const getAllCardsByColumnId = async (columnId: string) => {
+    return prisma.card.findMany({
+      where: { columnId },
+    });
+  };
 
 export const getCardById = async (id: string) => {
-  return cards.find((card: any) => card.id === id);
+  return prisma.card.findUnique({
+    where: { id },
+  });
 };
 
-export const addCard = async (newCard: any) => {
-  cards.push(newCard);
-  return newCard;
+export const addCard = async (newCard: {
+  title: string;
+  description: string;
+  columnId: string;
+}) => {
+  return prisma.card.create({
+    data: {
+      title: newCard.title,
+      description: newCard.description,
+      columnId: newCard.columnId,
+    },
+  });
 };
 
-export const updateCard = async (id: string, updatedCard: any) => {
-  const cardIndex = cards.findIndex((card: any) => card.id === id);
-  if (cardIndex !== -1) {
-    cards[cardIndex] = { ...cards[cardIndex], ...updatedCard };
-    return cards[cardIndex];
-  }
-  return null;
+export const updateCard = async (
+  id: string,
+  updatedCard: { title?: string; description?: string; }
+) => {
+  return prisma.card.update({
+    where: { id },
+    data: updatedCard,
+  });
 };
 
 export const deleteCard = async (id: string) => {
-  const newCards = cards.filter((card: any) => card.id !== id);
-  cards = newCards;
-  return newCards;
+  return prisma.card.delete({
+    where: { id },
+  });
 };
-
-
-//kufja4-vopnix-betsiQ
