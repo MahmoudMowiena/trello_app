@@ -12,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(card);
       
   } else if (req.method === 'PUT') {
-      const { title, description } = req.body;
-      const updatedCard = await updateCard(`${id}`,{title, description})
+      const { title, description, columnId } = req.body;
+      const updatedCard = await updateCard(`${id}`,{title, description, columnId})
       res.status(200).json(updatedCard);
 
   } else if (req.method === 'DELETE') {

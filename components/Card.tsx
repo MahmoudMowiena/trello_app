@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
           </button>
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-              <button onClick={() => { setIsEditing(true); setMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Update</button>
+              <button onClick={() => { setIsEditing(true); setMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Edit</button>
               <button onClick={handleDelete} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Delete</button>
             </div>
           )}

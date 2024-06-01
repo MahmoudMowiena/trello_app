@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getAllColumnsByBoardId, addColumn } from '../../../repositories/columnRepo'
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const columns = await getAllColumnsByBoardId('1');

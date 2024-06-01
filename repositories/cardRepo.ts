@@ -32,7 +32,7 @@ export const addCard = async (newCard: {
 
 export const updateCard = async (
   id: string,
-  updatedCard: { title?: string; description?: string; }
+  updatedCard: { title?: string; description?: string; columnId?: string}
 ) => {
   return prisma.card.update({
     where: { id },

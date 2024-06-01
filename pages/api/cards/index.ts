@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(cards);
   } else if (req.method === 'POST') {
     const { title, description, columnId, labels } = req.body;
-    const newCard = await addCard({ title, description, columnId, labels });
+    const newCard = await addCard({ title, description, columnId });
     res.status(201).json(newCard);
   } else {
     res.setHeader('Allow', ['GET', 'POST']);
