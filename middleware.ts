@@ -10,10 +10,16 @@ export async function middleware (req: NextRequest) {
         }
     } = await supabase.auth.getSession();
 
-    console.log(session);
-    
-    if(!session) {
-        return NextResponse.rewrite(new URL('/login', req.url))
+    const requestedPath = req.nextUrl.pathname;
+
+    if (session) {
+        if (requestedPath === '/login' || requestedPath === '/register') {
+            return NextResponse.redirect(new URL('/home', req.url));
+        }
+    } else {
+        if (requestedPath !== '/login' && requestedPath !== '/register') {
+            return NextResponse.rewrite(new URL('/login', req.url));
+        }
     }
 
     return res;
@@ -21,6 +27,6 @@ export async function middleware (req: NextRequest) {
 
 export const config = {
     matcher: [
-      '/((?!api|_next/static|_next/image|favicon.ico|register).*)',
+      '/((?!api|_next/static|_next/image|favicon.ico).*)',
     ],
   }

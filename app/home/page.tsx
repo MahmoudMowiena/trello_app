@@ -8,7 +8,7 @@ import { ColumnData as Column } from '../../interfaces';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
-const ProjectPage: React.FC = () => {
+export default function Home() {
   const [columns, setColumns] = useState<Column[]>([]);
 
   useEffect(() => {
@@ -42,5 +42,3 @@ const ProjectPage: React.FC = () => {
     </>
   );
 };
-
-export default ProjectPage;

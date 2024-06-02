@@ -20,19 +20,21 @@ export const addCard = async (newCard: {
   title: string;
   description: string;
   columnId: string;
+  imageFileName: string | null
 }) => {
   return prisma.card.create({
     data: {
       title: newCard.title,
       description: newCard.description,
       columnId: newCard.columnId,
+      imageFileName: newCard.imageFileName,
     },
   });
 };
 
 export const updateCard = async (
   id: string,
-  updatedCard: { title?: string; description?: string; columnId?: string}
+  updatedCard: { title?: string; description?: string; columnId?: string; imageFileName?: string}
 ) => {
   return prisma.card.update({
     where: { id },

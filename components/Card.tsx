@@ -1,40 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardData } from '../interfaces';
+import ImageUpload from './ImageUpload';
 
 interface CardProps {
   card: CardData;
-  onUpdate: (cardId: string, newTitle: string, newDescription: string) => void;
-  onDelete: (cardId: string) => void;
+  onUpdateCard: (cardId: string, newTitle: string, newDescription: string, newImageName?: string) => void;
+  onDeleteCard: (cardId: string) => void;
 }
 
-const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
+const Card: React.FC<CardProps> = ({ card, onUpdateCard, onDeleteCard }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(card.title);
   const [newDescription, setNewDescription] = useState(card.description);
+  const [newImageName, setNewImageName] = useState(card.imageFileName);
+
+  useEffect(() => {
+    if (newImageName !== card.imageFileName) {
+      handleUpdateCard();
+    }
+  }, [newImageName]);
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleUpdate = () => {
-    onUpdate(card.id, newTitle, newDescription);
+  const handleUpdateCard = () => {
+    console.log(newImageName);
+
+    onUpdateCard(card.id, newTitle, newDescription, newImageName);
     setIsEditing(false);
   };
 
-  const handleDelete = () => {
-    onDelete(card.id);
+  const handleDeleteCard = () => {
+    onDeleteCard(card.id);
     setIsEditing(false);
     setMenuOpen(false);
   };
+
+  const handleFileNameChange = (imageName: string) => {
+    setNewImageName(imageName);
+  }
 
   return (
     <div className="relative bg-white p-4 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-2">
         <div className="flex space-x-1">
-          {/* {card.labels?.map((label, index) => (
-            <span key={index} className={`block h-2 w-6 bg-${label}-500 rounded-full`}></span>
-          ))} */}
+        {/* <img 
+          src={`https://lqdmizxmdgfywuxmjqjm.supabase.co/storage/v1/object/public/cardsImages/${card.imageName}`}
+          alt="Card Image" 
+          className="w-full h-32 object-cover mb-2 rounded hover:opacity-75 transition-opacity duration-200"
+          onClick={handleAddImage}
+        /> */}
+        <ImageUpload cardId={card.id} imageFileName={card.imageFileName} onFileNameChange={handleFileNameChange}/>
         </div>
         <div className="relative">
           <button onClick={handleMenuToggle} className="text-gray-500">
@@ -45,7 +63,7 @@ const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
               <button onClick={() => { setIsEditing(true); setMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Edit</button>
-              <button onClick={handleDelete} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Delete</button>
+              <button onClick={handleDeleteCard} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Delete</button>
             </div>
           )}
         </div>
@@ -63,7 +81,7 @@ const Card: React.FC<CardProps> = ({ card, onUpdate, onDelete }) => {
             onChange={(e) => setNewDescription(e.target.value)}
             className="mb-2 w-full p-2 border border-gray-300 rounded"
           />
-          <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+          <button onClick={handleUpdateCard} className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
         </div>
       ) : (
         <>

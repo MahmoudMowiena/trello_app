@@ -9,4 +9,5 @@ export interface CardData {
   columnId: string;
   title: string;
   description: string;
+  imageFileName?: string
 }

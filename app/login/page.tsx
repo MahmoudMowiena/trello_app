@@ -2,8 +2,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import { headers } from 'next/headers';
+import React, { useEffect, useState } from 'react';
 
 export default function Login() {
   const [data, setData] = useState<{ email: string; password: string }>({
@@ -32,18 +31,14 @@ export default function Login() {
 
   const signInGithub = async () => {
     const origin = window.location.origin;
-    const { error, data } = await supabase.auth.signInWithOAuth({
+    const { error, data: dataUser } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${origin}`,
+        redirectTo: `${origin}/home/`,
       },
     });
 
-    if (error) {
-      console.error(error);
-    } else {
-      window.location.href = data.url;
-    }
+    if(error) console.log(error);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

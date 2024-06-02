@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const cards = await getAllCardsByColumnId('1');
     res.status(200).json(cards);
   } else if (req.method === 'POST') {
-    const { title, description, columnId, labels } = req.body;
+    const { title, description, columnId, imageFileName } = req.body;
     const newCard = await addCard({ title, description, columnId });
     res.status(201).json(newCard);
   } else {

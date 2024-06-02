@@ -33,5 +33,5 @@ model Card {
   description String
   column      Column   @relation(fields: [columnId], references: [id])
   columnId    String
-  labels      String[]
+  imageFileName String?
 }

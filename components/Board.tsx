@@ -44,6 +44,64 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
     }
   };
 
+  const handleUpdateColumn = async (columnId: string, newTitle: string) => {
+    const existingColumn = columns.find((column) => column.id === columnId);
+
+    if (existingColumn) {
+      const updatedColumn = {
+        ...existingColumn,
+        title: newTitle,
+      };
+
+      setColumns((prevColumns) => prevColumns.map((column) => (column.id === columnId ? updatedColumn : column)));
+
+      await fetch(`/api/columns/${columnId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedColumn),
+      });
+    }
+  };
+
+  const handleDeleteColumn = async (columnId: string) => {
+    setColumns(prevColumns => prevColumns.filter(column => column.id !== columnId));
+
+    await fetch(`/api/columns/${columnId}`, {
+      method: 'DELETE',
+    });
+  };
+
+  const handleAddCard = (newCard: CardData) => {
+    setColumns(prevColumns =>
+      prevColumns.map(column =>
+        column.id === newCard.columnId
+          ? {
+              ...column,
+              cards: [...column.cards, newCard],
+            }
+          : column
+      )
+    );
+  };
+  
+
+  const updateColumnState = (card: CardData) => {
+    setColumns(prevColumns =>
+      prevColumns.map(column =>
+        column.id === card.columnId
+          ? {
+            ...column,
+            cards: column.cards.map(Card =>
+              Card.id === card.id ? card : Card
+            ),
+          }
+          : column
+      )
+    );
+  }
+
   const handleUpdateCard = async (updatedCard: CardData) => {
     try {
       const response = await fetch(`/api/cards/${updatedCard.id}`, {
@@ -56,21 +114,10 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
 
       if (response.status === 200) {
         const updatedCardData: CardData = await response.json();
-        setColumns(prevColumns =>
-          prevColumns.map(column =>
-            column.id === updatedCardData.columnId
-              ? {
-                  ...column,
-                  cards: column.cards.map(card =>
-                    card.id === updatedCardData.id ? updatedCardData : card
-                  ),
-                }
-              : column
-          )
-        );
+        updateColumnState(updatedCardData);
       }
-
       return response.status;
+
     } catch (error) {
       console.error('Failed to update card:', error);
       return 500;
@@ -107,7 +154,7 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
         cards: sourceColumn.cards.filter((_, index) => index !== source.index),
       };
 
-      if(destColumn.cards == null || destColumn.cards.length == 0) {
+      if (destColumn.cards == null || destColumn.cards.length == 0) {
         updatedColumns[destColumnIndex] = {
           ...destColumn,
           cards: [
@@ -116,14 +163,15 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
         };
       }
       else {
-      updatedColumns[destColumnIndex] = {
-        ...destColumn,
-        cards: [
-          ...destColumn.cards.slice(0, destination.index),
-          movedCard,
-          ...destColumn.cards.slice(destination.index),
-        ],
-      }};
+        updatedColumns[destColumnIndex] = {
+          ...destColumn,
+          cards: [
+            ...destColumn.cards.slice(0, destination.index),
+            movedCard,
+            ...destColumn.cards.slice(destination.index),
+          ],
+        }
+      };
 
       return updatedColumns;
     });
@@ -140,10 +188,13 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
         <div className="container-xl lg:container m-auto">
           <div className="flex overflow-x-auto px-4 py-4">
             {columns.map(column => (
-              <Column 
-                key={column.id} 
+              <Column
+                key={column.id}
                 column={column}
+                onUpdateColumn={handleUpdateColumn}
+                onDeleteColumn={handleDeleteColumn}
                 onUpdateCard={handleUpdateCard} // Pass the handler with correct signature
+                onAddCard={handleAddCard}
               />
             ))}
             <div onClick={handleAddColumn} className="w-72 flex-shrink-0 bg-white p-4 rounded-lg shadow-md mr-4 text-center cursor-pointer">
