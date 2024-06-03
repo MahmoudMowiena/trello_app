@@ -2,6 +2,10 @@
 
 Cinnamon is a Trello-like application designed for efficient project management on a smaller scale. It features a single board where users can manage columns and cards with ease. The application ensures secure access with authentication and offers seamless drag-and-drop functionality for card management. The entire application is written in TypeScript for enhanced code quality and maintainability.
 
+## Deployment
+
+The application is deployed on Vercel. You can access it [here](https://trello-gcty7vcwe-mahmoud-mowienas-projects.vercel.app).
+
 ## Features
 
 ### Board Management

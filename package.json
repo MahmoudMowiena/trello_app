@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate --schema=./infrastructure/prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
