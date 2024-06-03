@@ -2,11 +2,14 @@ import React from 'react'
 
 const Titlebar = () => {
   return (
-    <div className="container mx-auto flex items-center justify-between">
-      <div className="text-xl font-bold flex items-center">
-        Cinammon
-      </div>
+<section className="bg-white pt-8">
+  <div className="container px-12">
+    <div className="text-2xl font-bold flex items-center">
+      Cinnamon
     </div>
+  </div>
+</section>
+
   )
 }
 export default Titlebar

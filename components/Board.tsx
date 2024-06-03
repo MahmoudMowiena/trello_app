@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import Column from './Column';
-import { ColumnData, CardData } from '../interfaces';
+import { CardData, ColumnData } from '../interfaces';
 
 interface BoardProps {
   initialColumns: ColumnData[];
 }
+
 
 const Board: React.FC<BoardProps> = ({ initialColumns }) => {
   const [columns, setColumns] = useState<ColumnData[]>(initialColumns);
@@ -78,9 +79,9 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
       prevColumns.map(column =>
         column.id === newCard.columnId
           ? {
-              ...column,
-              cards: [...column.cards, newCard],
-            }
+            ...column,
+            cards: column.cards ? [...column.cards, newCard] : [newCard],
+          }
           : column
       )
     );
@@ -93,7 +94,7 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
         column.id === card.columnId
           ? {
             ...column,
-            cards: column.cards.map(Card =>
+            cards: column.cards?.map(Card =>
               Card.id === card.id ? card : Card
             ),
           }
@@ -139,6 +140,7 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
 
     const movedCard = sourceColumn.cards[source.index];
     movedCard.columnId = destColumn.id;
+    
 
     setColumns(prevColumns => {
       const updatedColumns = [...prevColumns];
@@ -148,11 +150,12 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
       const destColumnIndex = updatedColumns.findIndex(
         column => column.id === destination.droppableId
       );
-
+    
       updatedColumns[sourceColumnIndex] = {
         ...sourceColumn,
-        cards: sourceColumn.cards.filter((_, index) => index !== source.index),
+        cards: sourceColumn.cards?.filter((_, index) => index !== source.index),
       };
+    
 
       if (destColumn.cards == null || destColumn.cards.length == 0) {
         updatedColumns[destColumnIndex] = {
@@ -172,7 +175,7 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
           ],
         }
       };
-
+    
       return updatedColumns;
     });
 
@@ -184,26 +187,30 @@ const Board: React.FC<BoardProps> = ({ initialColumns }) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <section className="bg-blue-50 px-4 py-10">
-        <div className="container-xl lg:container m-auto">
-          <div className="flex overflow-x-auto px-4 py-4">
-            {columns.map(column => (
-              <Column
-                key={column.id}
-                column={column}
-                onUpdateColumn={handleUpdateColumn}
-                onDeleteColumn={handleDeleteColumn}
-                onUpdateCard={handleUpdateCard} // Pass the handler with correct signature
-                onAddCard={handleAddCard}
-              />
-            ))}
-            <div onClick={handleAddColumn} className="w-72 flex-shrink-0 bg-white p-4 rounded-lg shadow-md mr-4 text-center cursor-pointer">
-              + Add new column
-            </div>
-          </div>
+  <section className="bg-white-50 px-4 py-0">
+    <div className="container-xl lg:container">
+      <div className="flex flex-col sm:flex-row overflow-x-auto px-4 py-4">
+        {columns.map(column => (
+          <Column
+            key={column.id}
+            column={column}
+            onUpdateColumn={handleUpdateColumn}
+            onDeleteColumn={handleDeleteColumn}
+            onUpdateCard={handleUpdateCard}
+            onAddCard={handleAddCard}
+          />
+        ))}
+        <div
+          onClick={handleAddColumn}
+          className="w-72 flex-shrink-0 bg-white p-4 mt-4 rounded-lg mr-4 text-center cursor-pointer border-2 border-dashed border-gray-300 hover:bg-gray-100"
+          style={{ height: '10rem' }}
+        >
+          + Add new column
         </div>
-      </section>
-    </DragDropContext>
+      </div>
+    </div>
+  </section>
+</DragDropContext>
   );
 };
 

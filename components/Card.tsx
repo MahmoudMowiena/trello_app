@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CardData } from '../interfaces';
-import ImageUpload from './ImageUpload';
+import { supabase } from '@/lib/supabase';
 
 interface CardProps {
   card: CardData;
@@ -38,32 +38,58 @@ const Card: React.FC<CardProps> = ({ card, onUpdateCard, onDeleteCard }) => {
     setMenuOpen(false);
   };
 
-  const handleFileNameChange = (imageName: string) => {
-    setNewImageName(imageName);
-  }
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let file: any = "";
+    setMenuOpen(false);
+
+    if (e.target.files) {
+      file = e.target.files[0];
+    }
+
+    const { data, error } = await supabase.storage.from("cardsImages").upload(card.id + file.name, file as File);
+
+    if (data) {
+      setNewImageName(file.name);
+    } else {
+      console.log(error)
+    }
+  };
 
   return (
-    <div className="relative bg-white p-4 rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-2">
-        <div className="flex space-x-1">
-        {/* <img 
-          src={`https://lqdmizxmdgfywuxmjqjm.supabase.co/storage/v1/object/public/cardsImages/${card.imageName}`}
-          alt="Card Image" 
-          className="w-full h-32 object-cover mb-2 rounded hover:opacity-75 transition-opacity duration-200"
-          onClick={handleAddImage}
-        /> */}
-        <ImageUpload cardId={card.id} imageFileName={card.imageFileName} onFileNameChange={handleFileNameChange}/>
+    <div className="relative bg-gray-100 p-4 rounded-lg shadow-md">
+      {newImageName && (
+        <div className="mb-2">
+          <div className="flex flex-col items-center">
+            <label className="cursor-pointer">
+              <img
+                src={`https://lqdmizxmdgfywuxmjqjm.supabase.co/storage/v1/object/public/cardsImages/${card.id + card.imageFileName}`}
+                alt="Selected"
+                className="w-full max-w-xs md:max-w-sm lg:max-w-md h-auto object-cover rounded-lg hover:opacity-75"
+              />
+              <input type="file" className="hidden" onChange={handleUploadImage} />
+            </label>
+          </div>
         </div>
+      )}
+      <div className="flex justify-between items-center mb-2">
+        <h6 className="text-md font-semibold">{card.title}</h6>
         <div className="relative">
-          <button onClick={handleMenuToggle} className="text-gray-500">
+          <button onClick={handleMenuToggle} className="text-gray-500 hover:text-black transition-colors duration-200">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v.01M12 12v.01M12 18v.01"></path>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 12h.01M12 12h.01M18 12h.01"></path>
             </svg>
+
           </button>
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+            <div className="absolute right-4 top-2 mt-2 w-40 bg-white border rounded shadow-lg z-10">
+              {!newImageName && (
+                <label className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100" >
+                  Add image
+                  <input type="file" accept="image/*" className="hidden" onChange={handleUploadImage} />
+                </label>
+              )}
               <button onClick={() => { setIsEditing(true); setMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Edit</button>
-              <button onClick={handleDeleteCard} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Delete</button>
+              <button onClick={handleDeleteCard} className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100">Delete</button>
             </div>
           )}
         </div>
@@ -85,11 +111,11 @@ const Card: React.FC<CardProps> = ({ card, onUpdateCard, onDeleteCard }) => {
         </div>
       ) : (
         <>
-          <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
-          <p className="text-gray-600 mb-4">{card.description}</p>
+          <p className="text-gray-500 mb-4">{card.description}</p>
         </>
       )}
     </div>
+
   );
 };
 

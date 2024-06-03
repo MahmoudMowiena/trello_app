@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Cinnamon Trello-like Board Application
 
-## Getting Started
+Cinnamon is a Trello-like application designed for efficient project management on a smaller scale. It features a single board where users can manage columns and cards with ease. The application ensures secure access with authentication and offers seamless drag-and-drop functionality for card management. The entire application is written in TypeScript for enhanced code quality and maintainability.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Board Management
+- Add, edit, and delete columns.
+- Add, edit (title and description), and delete cards within columns.
+- Drag and drop cards between columns.
+- Attach images to cards.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Authentication
+- User registration and login via Supabase Auth.
+- GitHub as an additional SSO provider.
+- Middleware for protected routes, redirecting unauthenticated users to the login or register page.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend:**
+  - [Next.js](https://nextjs.org/)
+  - [React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)
+  - [TailwindCSS](https://tailwindcss.com/)
 
-## Learn More
+- **Backend:**
+  - [Next.js API routes](https://nextjs.org/docs/api-routes/introduction)
 
-To learn more about Next.js, take a look at the following resources:
+- **Database:**
+  - [Supabase](https://supabase.io/)
+  - [Prisma ORM](https://www.prisma.io/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Authentication:**
+  - [Supabase Auth](https://supabase.io/docs/guides/auth)
+  - [Supabase Auth Helpers](https://github.com/supabase/auth-helpers)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Setup Instructions
 
-## Deploy on Vercel
+### Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Node.js
+- Supabase account
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/your-username/cinnamon.git
+   cd cinnamon
+   ```
+2. **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+3. **Set up environment variables:**
+    
+
+    Create a .env.local file in the root directory and add     the following variables:
+
+    ```bash
+    NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+    ```
+
+4. **Set up Supabase:**
+
+    - Create a new project in Supabase.
+    - Set up the authentication providers (Email and GitHub).
+    - Create the necessary tables and storage buckets as per your application's requirements.
+
+5. **Run the application:**
+
+    ```bash
+    npm run dev
+    ```
+
+    The application should now be running on http://localhost:3000.
+
+## Usage
+
+- **Landing Page:** Access the Cinnamon board.
+- **Authentication:** Register or log in to access the board.
+- **Board Management:** Add, edit, delete columns and cards. Use drag and drop to move cards between columns. Attach images to cards.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgements
+
+- [Next.js](https://nextjs.org/)
+- [React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Supabase](https://supabase.io/)
+- [Prisma ORM](https://www.prisma.io/)
+
