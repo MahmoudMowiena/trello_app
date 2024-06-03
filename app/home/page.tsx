@@ -15,6 +15,7 @@ export default function Home() {
     const loadColumns = async () => {
       const data = await fetchData();
       setColumns(data);
+      router.refresh();
     };
 
     loadColumns();
