@@ -1,6 +1,7 @@
 import { IColumnRepository } from '@/domain/repositories/IColumnRepository';
 import prisma from '../prisma/prismaClient';
 import { Column } from '@/domain/entities/Column';
+import { Card } from '@/domain/entities/Card';
 
 
 export class ColumnRepository implements IColumnRepository {
@@ -31,11 +32,11 @@ export class ColumnRepository implements IColumnRepository {
   };
 
   async deleteColumn(id: string): Promise<Column> {
-    const columnCards = await prisma.card.findMany({
+    const columnCards: Card[] = await prisma.card.findMany({
       where: { columnId: id },
     });
 
-    await Promise.all(columnCards.map(async (card) => {
+    await Promise.all(columnCards?.map(async (card) => {
       await prisma.card.delete({
         where: { id: card.id },
       });
