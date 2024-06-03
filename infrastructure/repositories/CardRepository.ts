@@ -5,7 +5,6 @@ import { Card } from '@/domain/entities/Card';
 
 export class CardRepository implements ICardRepository {
 
-
   async getCardById(id: string): Promise<Card | null> {
     return prisma.card.findUnique({
       where: { id },

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ColumnRepository } from '../../../repositories/ColumnRepository';
+import { ColumnRepository } from '../../../infrastructure/repositories/ColumnRepository';
 import { GetAllColumnsByBoardIdUseCase } from '../../../application/useCases/column/GetAllColumnsByBoardIdUseCase';
 import { AddColumnUseCase } from '../../../application/useCases/column/AddColumnUseCase';
 import { ColumnService } from '../../../application/services/ColumnService';

@@ -15,6 +15,11 @@ Cinnamon is a Trello-like application designed for efficient project management 
 - GitHub as an additional SSO provider.
 - Middleware for protected routes, redirecting unauthenticated users to the login or register page.
 
+### Design Principles
+- SOLID Principles: The application adheres to SOLID principles, ensuring a robust and maintainable codebase.
+- Clean Architecture: Implements clean architecture principles to separate concerns, enhance testability, and promote scalability.
+- Middleware for protected routes, redirecting unauthenticated users to the login or register page.
+
 ## Tech Stack
 
 - **Frontend:**
@@ -32,6 +37,40 @@ Cinnamon is a Trello-like application designed for efficient project management 
 - **Authentication:**
   - [Supabase Auth](https://supabase.io/docs/guides/auth)
   - [Supabase Auth Helpers](https://github.com/supabase/auth-helpers)
+
+  ## Data Architecture
+
+### ER Diagram
+
+![ER Diagram](/public/ERD.jpg)
+
+### Tables and Relationships
+
+- **Columns**
+  - id (Primary Key)
+  - title
+  - board_id (Foreign Key to Board)
+
+- **Cards**
+  - id (Primary Key)
+  - title
+  - description
+  - image_file_name
+  - column_id (Foreign Key to Columns)
+
+- **Board**
+  - id (Primary Key)
+  - name
+
+#### Relationships
+
+- **Board to Columns:** One-to-Many (A board can have zero or multiple columns)
+- **Columns to Cards:** One-to-Many (A column can have zero or multiple cards)
+
+Visual Representation:
+   ```bash
+  Board (1) <----> (M) Columns (1) <----> (M) Cards
+   ```
 
 ## Setup Instructions
 
@@ -55,7 +94,6 @@ Cinnamon is a Trello-like application designed for efficient project management 
     ```
 3. **Set up environment variables:**
     
-
     Create a .env.local file in the root directory and add     the following variables:
 
     ```bash

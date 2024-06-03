@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { CardRepository } from '../../../repositories/CardRepository';
+import { CardRepository } from '../../../infrastructure/repositories/CardRepository';
 import { AddCardUseCase } from '../../../application/useCases/card/AddCardUseCase';
 import { CardService } from '../../../application/services/CardService';
 import { GetCardByIdUseCase } from '@/application/useCases/card/GetCardByIdUseCase';

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ColumnRepository } from '../../../repositories/ColumnRepository';
+import { ColumnRepository } from '../../../infrastructure/repositories/ColumnRepository';
 import { UpdateColumnUseCase } from '../../../application/useCases/column/UpdateColumnUseCase';
 import { DeleteColumnUseCase } from '../../../application/useCases/column/DeleteColumnUseCase';
 import { ColumnService } from '../../../application/services/ColumnService';

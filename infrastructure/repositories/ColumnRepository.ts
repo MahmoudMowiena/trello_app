@@ -31,8 +31,18 @@ export class ColumnRepository implements IColumnRepository {
   };
 
   async deleteColumn(id: string): Promise<Column> {
+    const columnCards = await prisma.card.findMany({
+      where: { columnId: id },
+    });
+
+    await Promise.all(columnCards.map(async (card) => {
+      await prisma.card.delete({
+        where: { id: card.id },
+      });
+    }));
+
     return prisma.column.delete({
       where: { id },
     });
-  };
+  }
 }

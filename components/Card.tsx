@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CardData } from '../interfaces';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/infrastructure/lib/supabase';
 
 interface CardProps {
   card: CardData;

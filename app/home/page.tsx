@@ -5,7 +5,7 @@ import Board from '../../components/Board';
 import Navbar from '../../components/Navbar';
 import Titlebar from '../../components/Titlebar';
 import { ColumnData as Column } from '../../interfaces';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/infrastructure/lib/supabase';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {

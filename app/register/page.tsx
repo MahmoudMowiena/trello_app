@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/infrastructure/lib/supabase';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -137,6 +137,13 @@ export default function Register() {
                 onChange={handleChange}
               />
             </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Already a user?
+              </a>
+            </label>
           </div>
           <div className="w-full max-w-md space-y-6">
             <button
