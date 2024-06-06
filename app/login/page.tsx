@@ -1,7 +1,7 @@
 "use client";
 
 import { supabase } from '@/infrastructure/lib/supabase';
-import { useRouter } from 'next/navigation';
+import { permanentRedirect, redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 export default function Login() {
@@ -11,6 +11,20 @@ export default function Login() {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        router.push('/home');
+        router.refresh();
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [router]);
+
 
   const login = async () => {
     try {
