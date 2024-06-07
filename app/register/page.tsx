@@ -2,7 +2,7 @@
 
 import { supabase } from '@/infrastructure/lib/supabase';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Register() {
   const [data, setData] = useState<{
@@ -20,6 +20,19 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        router.push('/home');
+        router.refresh();
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [router]);
 
   const register = async () => {
     if (!data.email || !data.password || !data.confirmPassword) {
@@ -51,19 +64,14 @@ export default function Register() {
 
   const signInGithub = async () => {
     const origin = window.location.origin;
-    const { error, data } = await supabase.auth.signInWithOAuth({
+    const { error, data: dataUser } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${origin}/project`,
+        redirectTo: `${origin}/home/`,
       },
     });
 
-    if (error) {
-      console.error(error);
-      setError(error.message);
-    } else {
-      window.location.href = data.url;
-    }
+    if (error) console.log(error);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
