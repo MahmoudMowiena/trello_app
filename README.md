@@ -4,7 +4,7 @@ Cinnamon is a Trello-like application designed for efficient project management 
 
 ## Deployment
 
-The application is deployed on Vercel. You can access it [here](https://trello-94bnsrawc-mahmoud-mowienas-projects.vercel.app).
+The application is deployed on Vercel. You can access it [here](https://trello-8sa9k0xwi-mahmoud-mowienas-projects.vercel.app).
 
 ## Features
 
