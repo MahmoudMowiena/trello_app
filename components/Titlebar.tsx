@@ -5,7 +5,7 @@ const Titlebar = () => {
 <section className="bg-white pt-8">
   <div className="container px-12">
     <div className="text-2xl font-bold flex items-center">
-      Cinnamon
+      Planera
     </div>
   </div>
 </section>
