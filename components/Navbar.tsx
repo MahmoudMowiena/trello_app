@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
     <nav className="bg-white p-4 border-b border-gray-200">
       <div className="container flex items-center justify-between">
         <div className="text-3xl px-6 font-bold">
-          Trello
+          Planera
         </div>
         <div className="flex items-center justify-end">
           <button
