@@ -1,6 +1,6 @@
-# Cinnamon Trello-like Board Application
+# Planera
 
-Cinnamon is a Trello-like application designed for efficient project management on a smaller scale. It features a single board where users can manage columns and cards with ease. The application ensures secure access with authentication and offers seamless drag-and-drop functionality for card management. The entire application is written in TypeScript for enhanced code quality and maintainability.
+Planera is a Trello-like application designed for efficient project management on a smaller scale. It features a single board where users can manage columns and cards with ease. The application ensures secure access with authentication and offers seamless drag-and-drop functionality for card management. The entire application is written in TypeScript for enhanced code quality and maintainability.
 
 ## Deployment
 
@@ -121,7 +121,7 @@ Visual Representation:
 
 ## Usage
 
-- **Landing Page:** Access the Cinnamon board.
+- **Landing Page:** Access the Planera board.
 - **Authentication:** Register or log in to access the board.
 - **Board Management:** Add, edit, delete columns and cards. Use drag and drop to move cards between columns. Attach images to cards.
 
